@@ -1,6 +1,21 @@
 "use strict";
-const total = 100;
-function somar(a, b) {
-    return a + b;
+const input = document.querySelector("input");
+const total = localStorage.getItem("total");
+if (total && input) {
+    input.value = total;
+    calcularGanho(+input.value);
 }
-console.log(somar(5, 20));
+function calcularGanho(value) {
+    const p = document.querySelector("p");
+    if (p)
+        p.innerText = `ganho total: ${value + 100 - value * 0.2}`;
+}
+function totalMudou() {
+    if (input) {
+        const value = input.value;
+        localStorage.setItem("total", value);
+        calcularGanho(+value);
+    }
+}
+if (input)
+    input.addEventListener("keyup", totalMudou);
