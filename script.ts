@@ -1,23 +1,50 @@
-const input = document.querySelector("input");
+// {
+//   "nome": "Notebook",
+//   "preco": 2000,
+//   "descricao": "Novo notebook com 128gb de memória ram.",
+//   "garantia": "3",
+//   "seguroAcidentes": true,
+//   "empresaFabricante": {
+//     "nome": "Ranek",
+//     "fundacao": 1850,
+//     "pais": "Dinamarca"
+//   },
+//   "empresaMontadora": {
+//     "nome": "Handel",
+//     "fundacao": 2000,
+//     "pais": "Polônia"
+//   }
+// }
 
-const total = localStorage.getItem("total");
-
-if (total && input) {
-  input.value = total;
-  calcularGanho(+input.value);
+interface Empresa {
+  nome: string;
+  fundacao: number;
+  pais: string;
 }
 
-function calcularGanho(value: number) {
-  const p = document.querySelector("p");
-  if (p) p.innerText = `ganho total: ${value + 100 - value * 0.2}`;
+interface Produto {
+  nome: string;
+  preco: number;
+  descricao: string;
+  garantia: string;
+  seguroAcidentes: boolean;
+  empresaFabricante: Empresa;
+  empresaMontadora: Empresa;
 }
 
-function totalMudou() {
-  if (input) {
-    const value = input.value;
-    localStorage.setItem("total", value);
-    calcularGanho(+value);
-  }
+async function fetchProduct() {
+  const response = await fetch("https://api.origamid.dev/json/notebook.json");
+  const data = await response.json();
+  showProduct(data);
 }
 
-if (input) input.addEventListener("keyup", totalMudou);
+fetchProduct();
+
+function showProduct(data: Produto) {
+  document.body.innerHTML = `
+    <div>
+      <h2>${data.nome}</h2>
+      <p>${data.descricao}</p>
+    </div>
+  `;
+}
