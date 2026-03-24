@@ -6,6 +6,8 @@ async function fetchCursos() {
     mostrarCursos(data);
 }
 fetchCursos();
+// Interface → define forma de 1 item
+// [] → transforma em array daquele tipo
 function mostrarCursos(cursos) {
     cursos.map((curso) => {
         document.body.innerHTML += `
