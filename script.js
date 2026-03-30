@@ -1,24 +1,26 @@
 "use strict";
-// Defina a interface da API: https://api.origamid.dev/json/cursos.json e mostre os dados na tela.
-async function fetchCursos() {
-    const response = await fetch('https://api.origamid.dev/json/cursos.json');
-    const data = await response.json();
-    mostrarCursos(data);
+// Estado dos elementos
+// menu inativo:
+// class="" em nav
+// aria-expanded="false" em button
+// aria-label="Abrir Menu" em button
+// menu ativo:
+// class="active" em nav
+// aria-expanded="true" em button
+// aria-label="Fechar Menu" em button
+//Sempre tipar o querySelector quando for usar eventos específicos
+//O método addEventListener usa mapas de eventos baseados no tipo do elemento:
+// Element → eventos básicos (limitado)
+// HTMLElement / HTMLButtonElement → eventos completos (inclui pointerdown)
+const menuBtn = document.querySelector('#btn-mobile');
+const navMenu = document.querySelector('#nav');
+function handlePointer(e) {
+    e.preventDefault();
+    const currentTarget = e.currentTarget;
+    navMenu?.classList.toggle('active');
+    navMenu?.classList.contains('active') ? currentTarget.ariaLabel = 'Fechar Menu'
+        : currentTarget.ariaLabel = 'Abrir Menu';
+    navMenu?.classList.contains('active') ?
+        currentTarget.ariaExpanded = "true" : currentTarget.ariaExpanded = "false";
 }
-fetchCursos();
-// Interface → define forma de 1 item
-// [] → transforma em array daquele tipo
-function mostrarCursos(cursos) {
-    cursos.map((curso) => {
-        document.body.innerHTML += `
-    <h1 style="color: ${curso.nivel === 'iniciante' ? 'blue' : 'red'};">${curso.nome}</h1>
-    <p>Horas: ${curso.horas}h</p>
-    <p>Quantidade de aulas: ${curso.aulas}</p>
-    <p>${curso.gratuito ? 'Gratuito' : 'Pago'}</p>
-    <p>${curso.tags.join(', ')}</p>
-    <p>${curso.idAulas.join(', ')}</p>
-    <p >Nível: ${curso.nivel}</p>
-
-  `;
-    });
-}
+menuBtn?.addEventListener('pointerdown', handlePointer);

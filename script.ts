@@ -1,51 +1,36 @@
-// Defina a interface da API: https://api.origamid.dev/json/cursos.json e mostre os dados na tela.
+// Estado dos elementos
 
-// Existem apenas dois níveis de cursos, Iniciante (iniciante) e Avançado (avancado). Se for para iniciante pinte o título de azul, para avançado pinte de vermelho.
-  // "nome": "HTML e CSS",
-  //   "horas": 40,
-  //   "aulas": 200,
-  //   "gratuito": false,
-  //   "tags": ["HTML", "CSS", "JavaScript", "Browser"],
-  //   "idAulas": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  //   "nivel": "iniciante"
+// menu inativo:
+// class="" em nav
+// aria-expanded="false" em button
+// aria-label="Abrir Menu" em button
 
+// menu ativo:
+// class="active" em nav
+// aria-expanded="true" em button
+// aria-label="Fechar Menu" em button
 
+//Sempre tipar o querySelector quando for usar eventos específicos
+//O método addEventListener usa mapas de eventos baseados no tipo do elemento:
+// Element → eventos básicos (limitado)
+// HTMLElement / HTMLButtonElement → eventos completos (inclui pointerdown)
+const menuBtn = document.querySelector<HTMLElement>('#btn-mobile')
+const navMenu = document.querySelector<HTMLElement>('#nav')
 
-interface Curso {
-  nome: string;
-  horas: number;
-  aulas: number;
-  gratuito: boolean;
-  tags: string[];
-  idAulas: number[];
-  nivel: 'iniciante' | 'avancado';
-}
+function handlePointer(e: PointerEvent) {
+    e.preventDefault()
+    const currentTarget = e.currentTarget as HTMLElement
+    navMenu?.classList.toggle('active')
 
-async function fetchCursos() {
-  const response = await fetch('https://api.origamid.dev/json/cursos.json');
-  const data = await response.json();
-  mostrarCursos(data);
+    navMenu?.classList.contains('active') ?  currentTarget.ariaLabel = 'Fechar Menu' 
+    : currentTarget.ariaLabel = 'Abrir Menu' 
+
+    navMenu?.classList.contains('active') ? 
+    currentTarget.ariaExpanded = "true" : currentTarget.ariaExpanded = "false" 
   
-}
-
-fetchCursos();
-
-// Interface → define forma de 1 item
-// [] → transforma em array daquele tipo
-function mostrarCursos(cursos: Curso[]) {
-
-  cursos.map((curso) =>{
-  document.body.innerHTML += `
-    <h1 style="color: ${curso.nivel === 'iniciante' ? 'blue' : 'red' };">${curso.nome}</h1>
-    <p>Horas: ${curso.horas}h</p>
-    <p>Quantidade de aulas: ${curso.aulas}</p>
-    <p>${curso.gratuito ? 'Gratuito' : 'Pago'}</p>
-    <p>${curso.tags.join(', ')}</p>
-    <p>${curso.idAulas.join(', ')}</p>
-    <p >Nível: ${curso.nivel}</p>
-
-  `
-  }
-)
 
 }
+
+menuBtn?.addEventListener('pointerdown', handlePointer)
+
+
