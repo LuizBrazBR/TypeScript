@@ -1,26 +1,22 @@
 "use strict";
-// Estado dos elementos
-// menu inativo:
-// class="" em nav
-// aria-expanded="false" em button
-// aria-label="Abrir Menu" em button
-// menu ativo:
-// class="active" em nav
-// aria-expanded="true" em button
-// aria-label="Fechar Menu" em button
-//Sempre tipar o querySelector quando for usar eventos específicos
-//O método addEventListener usa mapas de eventos baseados no tipo do elemento:
-// Element → eventos básicos (limitado)
-// HTMLElement / HTMLButtonElement → eventos completos (inclui pointerdown)
-const menuBtn = document.querySelector('#btn-mobile');
-const navMenu = document.querySelector('#nav');
-function handlePointer(e) {
-    e.preventDefault();
-    const currentTarget = e.currentTarget;
-    navMenu?.classList.toggle('active');
-    navMenu?.classList.contains('active') ? currentTarget.ariaLabel = 'Fechar Menu'
-        : currentTarget.ariaLabel = 'Abrir Menu';
-    navMenu?.classList.contains('active') ?
-        currentTarget.ariaExpanded = "true" : currentTarget.ariaExpanded = "false";
+// 1 - Crie uma interface UserData para o formulário abaixo
+// 2 - Crie uma variável global UserData no window, ela será um objeto qualquer
+// 3 - Adicione um evento de keyup ao formulário
+// 4 - Quando o evento ocorrer adicione a {[id]: value} ao UserData
+// 5 - Salve UserData no localStorage
+// 6 - Crie uma User Type Guard, para verificar se o valor de localStorage é compatível com UserData
+// 7 - Ao refresh da página, preencha os valores de localStorage (caso seja UserData) no formulário e em window.UserData
+function handleForm(e) {
+    const target = e;
+    let value = +e.key;
+    console.log(value);
+    if (target instanceof HTMLElement) {
+        console.log(target?.id);
+        console.log(target.key);
+    }
+    window.UserData = {};
 }
-menuBtn?.addEventListener('pointerdown', handlePointer);
+const form = document.querySelector('#form');
+if (form && form instanceof HTMLElement) {
+    form.addEventListener('keyup', handleForm);
+}
