@@ -6,15 +6,39 @@
 // 5 - Salve UserData no localStorage
 // 6 - Crie uma User Type Guard, para verificar se o valor de localStorage é compatível com UserData
 // 7 - Ao refresh da página, preencha os valores de localStorage (caso seja UserData) no formulário e em window.UserData
-function handleForm(e) {
-    const target = e;
-    let value = +e.key;
-    console.log(value);
-    if (target instanceof HTMLElement) {
-        console.log(target?.id);
-        console.log(target.key);
+const UserData = window.localStorage.getItem('UserData');
+const nome = document.querySelector('#nome');
+const email = document.querySelector('#email');
+const cpf = document.querySelector('#cpf');
+if (UserData && UserData !== null) {
+    const json = JSON.parse(UserData);
+    if (isUserData(json)) {
+        window.UserData = json;
+        if (nome instanceof HTMLInputElement && email instanceof HTMLInputElement && cpf instanceof HTMLInputElement) {
+            nome.value = json.nome || '';
+            email.value = json.email || '';
+            cpf.value = json.cpf || '';
+        }
     }
-    window.UserData = {};
+}
+function isUserData(value) {
+    return (!!value &&
+        typeof value === 'object' &&
+        'nome' in value ||
+        'email' in value ||
+        'cpf' in value);
+}
+function handleForm(e) {
+    const { target } = e;
+    if (target instanceof HTMLInputElement) {
+        const value = target.value;
+        const id = target.id;
+        window.UserData = {
+            ...window.UserData,
+            [id]: value
+        };
+    }
+    localStorage.setItem('UserData', JSON.stringify(window.UserData));
 }
 const form = document.querySelector('#form');
 if (form && form instanceof HTMLElement) {
