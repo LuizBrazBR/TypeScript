@@ -1,4 +1,5 @@
 "use strict";
+window.UserData = {};
 // 3 - Adicione um evento de keyup ao formulário
 const form = document.querySelector("#form");
 if (form && form instanceof HTMLElement) {
@@ -10,6 +11,7 @@ function handleForm(e) {
     if (target instanceof HTMLInputElement) {
         const value = target.value;
         const id = target.id;
+        console.log(typeof window.UserData);
         if (typeof window.UserData === "object") {
             window.UserData = {
                 ...window.UserData,

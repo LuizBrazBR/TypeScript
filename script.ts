@@ -1,3 +1,5 @@
+window.UserData = {};
+
 // 1 - Crie uma interface UserData para o formulário abaixo
 interface UserData {
   nome: string;
@@ -22,6 +24,7 @@ function handleForm(e: KeyboardEvent) {
   if (target instanceof HTMLInputElement) {
     const value = target.value;
     const id = target.id;
+    console.log(typeof window.UserData);
     if (typeof window.UserData === "object") {
       window.UserData = {
         ...window.UserData,
