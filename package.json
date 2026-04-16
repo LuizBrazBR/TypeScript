@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "tsc": "^2.0.4"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   }
 }

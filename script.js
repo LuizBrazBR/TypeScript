@@ -1,42 +1,17 @@
 "use strict";
-// 3 - Adicione um evento de keyup ao formulário
-const form = document.querySelector('#form');
-if (form && form instanceof HTMLElement) {
-    form.addEventListener('keyup', handleForm);
+// 1 - Faça um fetch das vendas: https://api.origamid.dev/json/vendas.json
+// 2 - Defina o tipo/interface de cada venda (tuple)
+// 3 - Some o total das vendas e mostre na tela
+async function fetchData() {
+    const raw = await fetch(' https://api.origamid.dev/json/vendas.json');
+    const response = await raw.json();
+    totalVendas(response);
 }
-// 4 - Quando o evento ocorrer adicione a {[id]: value} ao UserData
-function handleForm(e) {
-    const { target } = e;
-    if (target instanceof HTMLInputElement) {
-        const value = target.value;
-        const id = target.id;
-        window.UserData = {
-            ...window.UserData,
-            [id]: value
-        };
-    }
-    // 5 - Salve UserData no localStorage
-    localStorage.setItem('UserData', JSON.stringify(window.UserData));
+function totalVendas(json) {
+    const sumWithInitial = json.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
+    document.body.innerHTML = `
+  <h1> Total Vendas </h1>
+  <p>O total de vendas foi: ${sumWithInitial}</p>
+  `;
 }
-// 6 - Crie uma User Type Guard, para verificar se o valor de localStorage é compatível com UserData
-function isUserData(value) {
-    return (!!value &&
-        typeof value === 'object' &&
-        'nome' in value ||
-        'email' in value ||
-        'cpf' in value);
-}
-// 7 - Ao refresh da página, preencha os valores de localStorage (caso seja UserData) no formulário e em window.UserData
-const UserData = window.localStorage.getItem('UserData');
-if (UserData && UserData !== null) {
-    const json = JSON.parse(UserData);
-    if (isUserData(json)) {
-        window.UserData = json;
-        Object.entries(json).forEach(([key, value]) => {
-            const input = document.querySelector(`#${key}`);
-            if (input instanceof HTMLInputElement) {
-                input.value = value;
-            }
-        });
-    }
-}
+fetchData();
