@@ -7,15 +7,11 @@ async function fetchData() {
     const response = await raw.json();
     totalVendas(response);
 }
-function totalVendas(json) {
-    const [, valor] = json;
-    console.log('Oi', valor);
-    const sumWithInitial = json.reduce((accumulator, currentValue) => {
-        (accumulator + currentValue[1], 0);
-    });
+function totalVendas(vendas) {
+    const total = vendas.reduce((acc, [, preco]) => acc + preco, 0);
     document.body.innerHTML = `
   <h1> Total Vendas </h1>
-  <p>O total de vendas foi: ${sumWithInitial}</p>
+  <p>O total de vendas foi: ${total}</p>
   `;
 }
 fetchData();

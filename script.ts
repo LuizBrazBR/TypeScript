@@ -2,28 +2,24 @@
 // 2 - Defina o tipo/interface de cada venda (tuple)
 // 3 - Some o total das vendas e mostre na tela
 
-interface VendasCarac {
+interface VendaCarac {
   marca: string;
   cor: string;
 }
 
-type Vendas = [string, number, string, VendasCarac];
+type Venda = [string, number, string, VendaCarac];
 
 async function fetchData() {
   const raw = await fetch(' https://api.origamid.dev/json/vendas.json');
-  const response: Vendas[] = await raw.json();
+  const response: Venda[] = await raw.json();
   totalVendas(response);
 }
 
-function totalVendas(json: Vendas[]) {
-  const [, valor] = json;
-  console.log('Oi', valor);
-  const sumWithInitial = json.reduce((accumulator, currentValue) => {
-    (accumulator + currentValue[1], 0);
-  });
+function totalVendas(vendas: Venda[]) {
+  const total = vendas.reduce((acc, [, preco]) => acc + preco, 0);
   document.body.innerHTML = `
   <h1> Total Vendas </h1>
-  <p>O total de vendas foi: ${sumWithInitial}</p>
+  <p>O total de vendas foi: ${total}</p>
   `;
 }
 
