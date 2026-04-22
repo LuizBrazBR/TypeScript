@@ -1,6 +1,15 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "strict": true
-  }
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "strict": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist"
+  },
+  //"include": ["src"], precisa criar nesse caminho
+  "exclude": ["node_modules"]
 }
